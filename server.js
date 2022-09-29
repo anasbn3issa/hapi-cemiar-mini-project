@@ -40,7 +40,7 @@ const init = async () => {
       method: "GET",
       path: "/users",
       handler: (request, h) => {
-        return h.redirect("/");
+        return "<h1>Users</h1>";
       },
     },
     {
