@@ -33,9 +33,10 @@ const init = async () => {
 
   server.views({
     engines: {
-        html: require("handlebars")
+        hbs: require("handlebars")
     },
-    path: path.join(__dirname, "views")
+    path: path.join(__dirname, "views"),
+    layout:'default',
   });
 
 
@@ -59,7 +60,7 @@ const init = async () => {
         path: "/login",
         handler: (request, h) => {
             if(request.payload.username === "admin" && request.payload.password === "admin"){
-                return h.file("logged-in.html");
+                return h.view('index', {username: request.payload.username});
             }
             return "wrong password and/or username";
         }
