@@ -24,7 +24,15 @@ const init = async () => {
             handler: (request, h) => {
                 return h.redirect('/');
             }
-        })
+        });
+
+        server.route({
+            method: 'GET',
+            path: '/{any*}',
+            handler: (request, h) => {
+                return '<h1>404 Not Found</h1>';
+            }
+        });
     
         await server.start();
         console.log('Server running on %s', server.info.uri);
