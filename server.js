@@ -1,26 +1,39 @@
 "use strict";
 
 const Hapi = require("@hapi/hapi");
+const path = require("path");
 
 const init = async () => {
   const server = Hapi.Server({
     port: 3000,
     host: "localhost",
-  });
+    routes: {
+        files: {
+            relativeTo: path.join(__dirname, "static")
+        }
 
-  await server.register({
-    plugin: require("hapi-geo-locate"),
-    options: {
-        enabledByDefault: true,
     }
   });
+
+  await server.register([
+    {
+      plugin: require("hapi-geo-locate"),
+      options: {
+        enabledByDefault: true,
+      },
+    },
+    {
+        plugin: require("@hapi/inert"),
+
+    }
+  ]);
 
   server.route([
     {
       method: "GET",
       path: "/",
       handler: (request, h) => {
-        return "<h1>Hello World!</h1>";
+        return h.file("welcome.html");
       },
     },
     {
@@ -31,14 +44,14 @@ const init = async () => {
       },
     },
     {
-        method: "GET",
-        path: "/location",
-        handler: (request, h) => {
-            if(request.location) {
-                return request.location;
-            }
-            return "<h1>Location not found</h1>";
+      method: "GET",
+      path: "/location",
+      handler: (request, h) => {
+        if (request.location) {
+          return request.location;
         }
+        return "<h1>Location not found</h1>";
+      },
     },
     {
       method: "GET",
