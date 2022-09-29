@@ -17,6 +17,14 @@ const init = async () => {
                 return '<h1>Hello World!</h1>';
             }
         });
+
+        server.route({
+            method: 'GET',
+            path: '/users',
+            handler: (request, h) => {
+                return h.redirect('/');
+            }
+        })
     
         await server.start();
         console.log('Server running on %s', server.info.uri);
