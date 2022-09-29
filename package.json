@@ -1,0 +1,27 @@
+{
+  "name": "hapi-cemiar-mini-peoject",
+  "version": "1.0.0",
+  "description": "Simple hapijs project",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anasbn3issa/hapi-cemiar-mini-project.git"
+  },
+  "keywords": [
+    "hapijs",
+    "oauth"
+  ],
+  "author": "Anas BEN AISSA",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anasbn3issa/hapi-cemiar-mini-project/issues"
+  },
+  "homepage": "https://github.com/anasbn3issa/hapi-cemiar-mini-project#readme",
+  "dependencies": {
+    "@hapi/hapi": "^20.2.2",
+    "nodemon": "^2.0.20"
+  }
+}
