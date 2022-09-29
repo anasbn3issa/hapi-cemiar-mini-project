@@ -25,8 +25,19 @@ const init = async () => {
     {
         plugin: require("@hapi/inert"),
 
+    },
+    {
+        plugin: require("@hapi/vision"),
     }
   ]);
+
+  server.views({
+    engines: {
+        html: require("handlebars")
+    },
+    path: path.join(__dirname, "views")
+  });
+
 
   server.route([
     {
@@ -63,6 +74,16 @@ const init = async () => {
         }
         return "<h1>Location not found</h1>";
       },
+    },
+    {
+        method: "GET",
+        path: "/dynamic",
+        handler: (request, h) => {
+            const data = {
+                name: "John Doe",
+            }
+            return h.view("index", data);
+        }
     },
     {
       method: "GET",
