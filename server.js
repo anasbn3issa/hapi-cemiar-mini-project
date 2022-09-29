@@ -8,6 +8,13 @@ const init = async () => {
     host: "localhost",
   });
 
+  await server.register({
+    plugin: require("hapi-geo-locate"),
+    options: {
+        enabledByDefault: true,
+    }
+  });
+
   server.route([
     {
       method: "GET",
@@ -22,6 +29,16 @@ const init = async () => {
       handler: (request, h) => {
         return h.redirect("/");
       },
+    },
+    {
+        method: "GET",
+        path: "/location",
+        handler: (request, h) => {
+            if(request.location) {
+                return request.location;
+            }
+            return "<h1>Location not found</h1>";
+        }
     },
     {
       method: "GET",
