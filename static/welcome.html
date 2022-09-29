@@ -9,6 +9,14 @@
   <body>
     <h1>Welcome to my static file</h1>
 
+    <form action="/login" method="POST">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" />
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" />
+        <button type="submit" value="login">Submit</button>
+    </form>
+
     <a href="/">Home</a>
     <a href="/users">Users</a>
     <a href="/location">Location</a>

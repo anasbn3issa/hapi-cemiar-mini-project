@@ -44,6 +44,17 @@ const init = async () => {
       },
     },
     {
+        method: "POST",
+        path: "/login",
+        handler: (request, h) => {
+            if(request.payload.username === "admin" && request.payload.password === "admin"){
+                return h.file("logged-in.html");
+            }
+            return "wrong password and/or username";
+        }
+
+    },
+    {
       method: "GET",
       path: "/location",
       handler: (request, h) => {
