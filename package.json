@@ -24,8 +24,15 @@
     "@hapi/hapi": "^20.2.2",
     "@hapi/inert": "^7.0.0",
     "@hapi/vision": "^7.0.0",
+    "bcrypt": "^5.0.1",
+    "bluebird": "^3.7.2",
+    "boom": "^7.3.0",
+    "dotenv": "^16.0.2",
     "handlebars": "^4.7.7",
     "hapi-geo-locate": "^4.1.1",
+    "hapi-mongodb": "^10.0.3",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.6.2",
     "nodemon": "^2.0.20"
   }
 }

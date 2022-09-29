@@ -1,7 +1,19 @@
 "use strict";
 
+require("dotenv").config();
+
 const Hapi = require("@hapi/hapi");
 const path = require("path");
+const mongoose = require("mongoose");
+
+
+const userApi = require("./handler/user");
+
+//dotenv
+
+const connectDb = require("./utils/database");
+
+
 
 const init = async () => {
   const server = Hapi.Server({
@@ -14,6 +26,8 @@ const init = async () => {
 
     }
   });
+
+  connectDb();
 
   await server.register([
     {
@@ -28,9 +42,20 @@ const init = async () => {
     },
     {
         plugin: require("@hapi/vision"),
+    },
+    {
+        plugin: require("hapi-mongodb"),
+        options: {
+            url: process.env.MONGODB_URL ,
+            settings: {
+                useUnifiedTopology: true,
+            },
+            decorate: true,
+        }
     }
   ]);
 
+  
   server.views({
     engines: {
         hbs: require("handlebars")
@@ -51,9 +76,17 @@ const init = async () => {
     {
       method: "GET",
       path: "/users",
-      handler: (request, h) => {
-        return "<h1>Users</h1>";
-      },
+      handler: userApi.getAllUsers,
+    },
+    {
+        method: "GET",
+        path: "/users/{id}",
+        handler: userApi.getUserByid,
+    },
+    {
+        method: "POST",
+        path: "/users",
+        handler: userApi.createUser,
     },
     {
         method: "POST",
