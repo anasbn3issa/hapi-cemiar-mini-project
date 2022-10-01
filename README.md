@@ -21,7 +21,7 @@ In this repository I am practicing basic concepts with HapiJS like :
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@anasbn3issa](https://twitter.com/anasbn3issa) - anasben3issa@gmail.com
+- [@anasbn3issa](https://twitter.com/anasbn3issa) - anasben3issa@gmail.com
 
 Project Link: [https://github.com/anasbn3issa/hapi-cemiar-mini-project](https://github.com/anasbn3issa/hapi-cemiar-mini-project/)
 
