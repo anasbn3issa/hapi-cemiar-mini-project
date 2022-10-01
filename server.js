@@ -5,6 +5,7 @@ require("dotenv").config();
 const Hapi = require("@hapi/hapi");
 const path = require("path");
 const mongoose = require("mongoose");
+const axios = require("axios");
 
 
 const userApi = require("./handler/user");
@@ -75,6 +76,58 @@ const init = async () => {
     },
     {
       method: "GET",
+      path: "/auth",
+      handler: (request, h) => {
+        return h.redirect(
+          `https://github.com/login/oauth/authorize?client_id=${process.env.OAUTH_GITHUB_CLIENT_ID}`);
+      }
+    },
+    {
+      method: "GET",
+      path: "/auth/callback",
+      handler: (request, h) => {
+        const body ={
+          client_id: process.env.OAUTH_GITHUB_CLIENT_ID,
+          client_secret: process.env.OAUTH_GITHUB_CLIENT_SECRET,
+          code: request.query.code,
+        };
+        const opts = {
+          headers: { accept: "application/json" },
+        };
+        return axios.post("https://github.com/login/oauth/access_token", body, opts)
+          .then((res) => {
+            const accessToken = res.data.access_token;
+            return h.redirect(`/githubinfo?access_token=${accessToken}`);
+          })
+          .catch((err) => {
+            console.log(err);
+            return h.redirect("/auth/failure");
+          });
+      }
+    },
+    {
+      method: "GET",
+      path: "/githubinfo",
+      handler: (request, h) => {
+        const opts = {
+          headers: { Authorization: `token ${request.query.access_token}` }
+        };
+        return axios.get("https://api.github.com/user", opts)
+          .then((res) => {
+            console.log(res.data.login);
+            console.log(res.data.bio);
+            console.log(res.data.public_repos);
+            return h.view("githubinfo", { username: res.data.login, bio: res.data.bio, public_repos: res.data.public_repos});
+          })
+          .catch((err) => {
+            console.log(err);
+            return h.redirect("/auth/failure");
+          });
+      }
+
+    },
+    {
+      method: "GET",
       path: "/users",
       handler: userApi.getAllUsers,
     },
@@ -114,7 +167,7 @@ const init = async () => {
         path: "/dynamic",
         handler: (request, h) => {
             const data = {
-                name: "John Doe",
+                username: "John Doe",
             }
             return h.view("index", data);
         }
