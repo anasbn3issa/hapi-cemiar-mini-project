@@ -97,7 +97,7 @@ const init = async () => {
         return axios.post("https://github.com/login/oauth/access_token", body, opts)
           .then((res) => {
             const accessToken = res.data.access_token;
-            return h.redirect(`/auth/success?access_token=${accessToken}`);
+            return h.redirect(`/githubinfo?access_token=${accessToken}`);
           })
           .catch((err) => {
             console.log(err);
@@ -106,24 +106,25 @@ const init = async () => {
       }
     },
     {
-      //this route returns my github username
       method: "GET",
-      path: "/git/username",
+      path: "/githubinfo",
       handler: (request, h) => {
         const opts = {
-          //headers: { Authorization: `token ${request.query.access_token}` }, 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
-          headers: { Authorization: `token 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` }
+          headers: { Authorization: `token ${request.query.access_token}` }
         };
         return axios.get("https://api.github.com/user", opts)
           .then((res) => {
-            console.log(res.data);
-            return res.data.login;
+            console.log(res.data.login);
+            console.log(res.data.bio);
+            console.log(res.data.public_repos);
+            return h.view("githubinfo", { username: res.data.login, bio: res.data.bio, public_repos: res.data.public_repos});
           })
           .catch((err) => {
             console.log(err);
             return h.redirect("/auth/failure");
           });
       }
+
     },
     {
       method: "GET",
@@ -166,7 +167,7 @@ const init = async () => {
         path: "/dynamic",
         handler: (request, h) => {
             const data = {
-                name: "John Doe",
+                username: "John Doe",
             }
             return h.view("index", data);
         }
